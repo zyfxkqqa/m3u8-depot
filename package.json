@@ -1,0 +1,27 @@
+{
+  "name": "m3u8-depot",
+  "version": "1.3.0",
+  "description": "Local HLS playlist downloader with browser-based task management",
+  "license": "MIT",
+  "author": "m3u8-depot contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-account/m3u8-depot.git"
+  },
+  "keywords": [
+    "hls",
+    "m3u8",
+    "downloader",
+    "local",
+    "task-queue"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "check": "node test/check-all.js",
+    "test": "node test/run-all.js",
+    "smoke": "node test/stage5-smoke.js"
+  }
+}

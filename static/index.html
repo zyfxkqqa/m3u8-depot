@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>m3u8-depot</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <div class="title-line"><h1>m3u8-depot</h1><span id="versionText" class="version-text"></span></div>
+        <p id="healthText">正在检查本地服务...</p>
+      </div>
+      <button id="refreshBtn" type="button">刷新</button>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="功能页面">
+      <button id="sitesTab" class="tab active" type="button" role="tab" data-tab="sites" aria-selected="true" aria-controls="sitesPanel">支持站点</button>
+      <button id="playTab" class="tab" type="button" role="tab" data-tab="play" aria-selected="false" aria-controls="playPanel" tabindex="-1">播放页解析</button>
+      <button id="detailTab" class="tab" type="button" role="tab" data-tab="detail" aria-selected="false" aria-controls="detailPanel" tabindex="-1">详情页解析</button>
+      <button id="tasksTab" class="tab" type="button" role="tab" data-tab="tasks" aria-selected="false" aria-controls="tasksPanel" tabindex="-1">下载任务</button>
+    </nav>
+
+    <section id="sitesPanel" class="panel tab-panel active" role="tabpanel" aria-labelledby="sitesTab">
+      <div class="sites-head">
+        <span id="siteCount">正在加载...</span>
+      </div>
+      <div id="sitesMessage" class="message"></div>
+      <div id="sitesList" class="sites-list"></div>
+    </section>
+
+    <section id="playPanel" class="panel input-panel tab-panel" role="tabpanel" aria-labelledby="playTab" hidden>
+      <label for="urlInput">播放页地址</label>
+      <textarea id="urlInput" rows="7" placeholder="每行输入一个播放页地址，例如：&#10;https://www.kxmp4.com/play/378302-6-2.html&#10;https://www.maliys.com/yun/64204-4-1.html&#10;https://www.zjlqzg.com/tianlangtv/193253-1-1.html"></textarea>
+      <div class="actions">
+        <button id="parseBtn" type="button">解析播放页</button>
+      </div>
+      <div id="message" class="message"></div>
+    </section>
+
+    <section id="detailPanel" class="panel input-panel tab-panel" role="tabpanel" aria-labelledby="detailTab" hidden>
+      <label for="detailUrlInput">详情页地址</label>
+      <textarea id="detailUrlInput" class="detail-url-input" rows="5" placeholder="请输入一个详情页地址，例如：&#10;https://www.kxmp4.com/detail/378301.html&#10;https://www.maliys.com/html/64204.html&#10;https://www.zjlqzg.com/tianlangyy/193253.html"></textarea>
+      <div class="actions">
+        <button id="parseDetailBtn" type="button">解析详情页</button>
+        <button id="addSelectedBtn" type="button" class="secondary" disabled>下载选中集数</button>
+      </div>
+      <div id="detailMessage" class="message"></div>
+
+      <div id="detailResult" class="detail-result" hidden>
+        <div class="detail-title-row">
+          <div>
+            <h2 id="detailTitle">-</h2>
+            <p id="detailSummary">-</p>
+          </div>
+          <div class="actions compact-actions">
+            <button id="addSelectedResultBtn" type="button" class="secondary" disabled>下载选中集数</button>
+            <button id="selectAllEpisodesBtn" type="button" class="ghost">全选本线路</button>
+            <button id="invertEpisodesBtn" type="button" class="ghost">反选</button>
+            <button id="clearEpisodesBtn" type="button" class="ghost">取消选择</button>
+          </div>
+        </div>
+        <div id="lineTabs" class="line-tabs"></div>
+        <div id="episodeGrid" class="episode-grid"></div>
+      </div>
+    </section>
+
+    <section id="tasksPanel" class="panel tab-panel" role="tabpanel" aria-labelledby="tasksTab" hidden>
+      <div class="tasks-head">
+        <span id="taskCount">0 个任务</span>
+      </div>
+
+      <div id="taskSummary" class="task-summary"></div>
+
+      <div class="task-controls">
+        <label>批次
+          <select id="taskBatchFilter">
+            <option value="all">全部批次</option>
+          </select>
+        </label>
+        <button id="clearTaskFiltersBtn" type="button" class="ghost">清除筛选</button>
+      </div>
+
+      <div class="task-toolbar">
+        <button id="selectPageTasksBtn" type="button" class="ghost">全选本页</button>
+        <button id="invertPageTasksBtn" type="button" class="ghost">反选本页</button>
+        <button id="startSelectedTasksBtn" type="button" class="secondary">开始选中</button>
+        <button id="deleteSelectedTasksBtn" type="button" class="danger">删除选中</button>
+        <button id="retryFailedTasksBtn" type="button" class="ghost">重试失败</button>
+        <button id="clearDoneBtn" type="button" class="ghost">清理完成</button>
+      </div>
+
+      <div id="taskMessage" class="message"></div>
+
+      <div id="taskList" class="task-table-wrap"></div>
+
+      <div class="pagination">
+        <span id="paginationInfo">共 0 条</span>
+        <label>每页
+          <select id="taskPageSize">
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </label>
+        <button id="firstPageBtn" type="button" class="ghost">首页</button>
+        <button id="prevPageBtn" type="button" class="ghost">上一页</button>
+        <span id="pageInfo">第 1 / 1 页</span>
+        <button id="nextPageBtn" type="button" class="ghost">下一页</button>
+        <button id="lastPageBtn" type="button" class="ghost">末页</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="duplicateModal" class="modal-backdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="duplicateModalTitle">
+      <h2 id="duplicateModalTitle">发现重复任务</h2>
+      <p id="duplicateModalText"></p>
+      <div class="modal-actions">
+        <button id="directDownloadBtn" type="button">直接下载</button>
+        <button id="redownloadBtn" type="button" class="secondary">重新下载</button>
+        <button id="cancelDuplicateBtn" type="button" class="ghost">取消</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# 运行时数据（含个人下载记录）
+data/*
+!data/.gitkeep
+
+# 日志
+*.log
+
+# 依赖与本地环境
+node_modules/
+.env
+.env.*
+env.local.bat
+
+# 编辑器 / 操作系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 本地工具与 AI 助手工作目录
+.workbuddy-ai/
+
+# 构建产物
+build/
+dist/
